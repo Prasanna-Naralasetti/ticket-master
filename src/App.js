@@ -13,7 +13,10 @@ import EmployeesList from './components/Employees/List'
 import EmployeeForm from './components/Employees/Form'
 import EmployeeShow from './components/Employees/Show'
 import EmployeeEdit from './components/Employees/Edit'
-import TicketList from './components/Tickets/List'
+import TicketLists from './components/Tickets/TicketLists'
+import AddTicket from './components/Tickets/AddTicket'
+import ShowTicket from './components/Tickets/ShowTicket'
+import EditTicket from './components/Tickets/EditTicket'
 import { connect } from 'react-redux'
 function App(props) {
   return (
@@ -21,7 +24,7 @@ function App(props) {
     <div>
       <h1>Ticket Master</h1>
       {/* <Link to="/" >Home</Link>
-      <Link to="/users/login">Login</Link>
+      <Link to="/users/login">Login</Link>npm start
       <Link to="/users/register">Register</Link>
         <Link to="/customers">Customers</Link>
         <Link to="/users/account">Account</Link>
@@ -57,7 +60,11 @@ function App(props) {
       <Route path="/employees/new" component={EmployeeForm}exact/>
       <Route path="/employees/:id" component={EmployeeShow}exact/>
       <Route path="/employees/edit/:id" component={EmployeeEdit}exact/>
-      <Route path="/tickets" component={TicketList}exact/>
+          <Route path="/tickets" component={TicketLists} exact={true} />
+          <Route path="/ticket/new" component={AddTicket} />
+          <Route path="/tickets/edit/:id" component={EditTicket} />
+          <Route path="/tickets/:id" component={ShowTicket} />
+
       
         </Switch>
       </div>

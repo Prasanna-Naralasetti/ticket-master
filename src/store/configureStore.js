@@ -4,7 +4,7 @@ import registerReducer from '../reducers/register'
 import customerReducer from '../reducers/customers'
 import departmentsReducer from '../reducers/departments'
 import employeesReducer from '../reducers/employees'
-import ticketsReducer from '../reducers/tickets'
+import ticketReducer from '../reducers/ticketReducer'
 
 const configureStore = () => {
     const store = createStore(combineReducers({
@@ -12,7 +12,7 @@ const configureStore = () => {
         customers:customerReducer,
         departments:departmentsReducer,
         employees:employeesReducer,
-        tickets: ticketsReducer
+        tickets: ticketReducer
 
     }), applyMiddleware(thunk))
     return store
