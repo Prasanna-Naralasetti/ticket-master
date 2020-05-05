@@ -1,44 +1,99 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import { startSetDepartments } from '../../actions/departmentsAction'
+import { Link } from 'react-router-dom'
+import DepartmentNew from '../Departments/New'
+import { startRemoveDepartment } from '../../actions/departmentsAction'
+import Swal from 'sweetalert2'
+import { MDBDataTable } from 'mdbreact'
 
-import { startSetDepartments, startRemoveDepartment} from '../../actions/departments'
-import DepartmentForm from './Form'
-
-
-function DepartmentList(props){
-    if (props.department.length==0){
+function DepartmentList (props){
+   const handleRemove = (id) => {
+       Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.value) {
+                  Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                  )
+                  props.dispatch(startRemoveDepartment(id))
+                }
+                
+              })
+    }
+    if(props.departments.length == 0){
         props.dispatch(startSetDepartments())
     }
-    const handleRemove=(id)=>{
-        const confirmRemove=window.confirm('Ae u sure')
-        if(confirmRemove){
-            props.dispatch(startRemoveDepartment(id))
-        }
+
+    
+    const data = {
+        columns: [
+            {
+                label: 'Name',
+                field: 'name'
+            },
+            {
+                label: 'Actions',
+                field: 'actions'
+            }
+        ],
+        rows: props.departments.map(department => ({
+            name : department.name,
+            actions: <div className="row">
+                    <div className="col-md-6 offset-md-1">
+                    <Link to={`/departments/${department._id}`}>
+                            <button className="btn btn-primary btn-sm">
+                                Show
+                            </button>
+                        </Link>
+                    </div>
+                    <div className="col-md-4 offset-md-1">
+                        <button className="btn btn-danger btn-sm" 
+                            onClick={ () => {
+                                    handleRemove(department._id)
+                                     }}>Remove
+                        </button>
+                    </div>
+            </div>
+    
+        }))
     }
+
+
     return(
-        <div>
-            <h1>Departments List-{props.department.length}</h1>
-            <ul>
-              {
-                  props.department.map(ele=>{
-                      return(
-                          <li key={ele._id}>{ele.name} 
-                          <button onClick={()=>{
-                              handleRemove(ele._id)
-                          }}>remove</button>
-                          </li>
-                     
-                      ) 
-                  })
-              }
-            </ul>
-            <DepartmentForm />
+     <div className="container col-md-6 mt-5">
+           {
+               props.departments ? (
+                   <div>
+                        <h2>Departments -{props.departments.length}</h2>
+
+                        <MDBDataTable 
+                            striped 
+                            bordered
+                            data={data}
+                       />
+            <DepartmentNew/>
+                    </div>
+               ):(
+                   <div>
+                       <p> loading...</p>
+                   </div>
+               )
+           }
         </div>
     )
 }
-const mapStateToProps=(state)=>{
-    return{
-        department:state.departments
+const mapStateToProps = (state) => {
+    return {
+        departments : state.departments
     }
-}
+} 
 export default connect(mapStateToProps)(DepartmentList)

@@ -1,33 +1,35 @@
-
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
 import configureStore from './store/configureStore'
-import App from './App';
 import { Provider } from 'react-redux'
-import { startSetUser } from './actions/register'
-import { startSetCustomers } from './actions/customers'
-import { startSetDepartments } from './actions/departments'
-import { startSetEmployees } from './actions/employees'
-import { startGetTickets } from '../src/actions/ticketAction'
+import { startSetUser, setUser } from './actions/userAction'
+import { startSetCustomers } from './actions/customersAction'
+import { startSetDepartments } from './actions/departmentsAction'
+import { startSetEmployees } from './actions/employeesAction'
+
+import 'bootstrap/dist/css/bootstrap.css' //npm install bootstrap
 
 const store = configureStore()
-store.subscribe(() => {
-    console.log(store.getState())
-})
-console.log(store.getState())
+// console.log(store.getState())
 
-//handle Page reloads
-if (localStorage.getItem('authToken')) {
+// store.subscribe(() => {
+//     console.log(store.getState())
+    
+// })
+
+//handle page reloads
+if(localStorage.getItem('authToken')){
     store.dispatch(startSetUser())
     store.dispatch(startSetCustomers())
-   store.dispatch(startSetDepartments())
-   store.dispatch(startSetEmployees())
-    store.dispatch(startGetTickets())
+    store.dispatch(startSetDepartments())
+    store.dispatch(startSetEmployees())
+   
 }
-
 const jsx = (
     <Provider store={store}>
-        <App />
+        <App/>
     </Provider>
 )
-ReactDOM.render(jsx, document.getElementById('root'));
+
+ReactDOM.render(jsx,document.getElementById('root'))

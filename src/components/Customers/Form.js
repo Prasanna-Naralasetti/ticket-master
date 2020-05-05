@@ -1,61 +1,87 @@
 import React from 'react'
-//import { addCustomer} from '../../actions/customers'
-import {connect} from 'react-redux'
-import { findCustomers } from '../../selectors/findCustomers'
-//import { startAddCustomer } from  '../../actions/customers'
-import {withRouter} from 'react-router-dom'
+import { connect } from 'react-redux'
+import { findCustomer } from '../../selectors/customerSelector'
+import { withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class CustomerForm extends React.Component{
     constructor(props){
         super(props)
-        this.state={
-            name:props.customer?props.customer.name:'',
-            email: props.customer ? props.customer.email :'',
-            mobile: props.customer ? props.customer.mobile :''
+        this.state = {
+            name : props.customer ? props.customer.name : '',
+            email :  props.customer ? props.customer.email : '',
+            mobile :  props.customer ? props.customer.mobile : ''
         }
     }
-    handleChange = (e) => {
+   handleChange =(e)=>{
         this.setState({
-            [e.target.name]: e.target.value
+           [e.target.name] : e.target.value
         })
-    }
-    handleSubmit = (e) => {
-        e.preventDefault()
-        const formData = {
-            name: this.state.name,
-            email: this.state.email,
-            mobile: this.state.mobile
-        }
-       //console.log(formData)
-
-        
-        this.props.handleSubmit((formData))
-    }
-    render() {
-        return (
+   }
+        handleSubmit =(e) => {
+           e.preventDefault()
+           const formData = {
+               name : this.state.name,
+               email : this.state. email ,
+               mobile :  this.state.mobile
+           }
+          this.props.handleSubmit(formData)
+       }
+    render(){
+        return(
             <div >
-                
                 <form onSubmit={this.handleSubmit}>
-                    <label>name
-                    <input name='name' id='name' type='text' value={this.state.name} onChange={this.handleChange} />
-                    </label><br />
-                    <label>email
-                    <input name='email' id='email' type='text' value={this.state.email} onChange={this.handleChange} />
-                    </label><br />
-                    <label>mobile
-                    <input name='mobile' id='mobile' type='mobile' value={this.state.mobile} onChange={this.handleChange} />
-                    </label><br />
-                    <input type='submit' value='submit' />
+                <div className="form-group ">
+                    <label htmlFor="name" >
+                        Name
+                    </label> 
+                    <input type="text"
+                            id="name"
+                            name="name"
+                            value={this.state.name} 
+                            onChange = {this.handleChange}
+                            className="form-control"/>
+                    </div>
+                  <div className="form-group ">
+                    <label htmlFor="email">
+                        Email
+                    </label> 
+                    <input type="text"
+                               id="email" 
+                               name="email"
+                               value={this.state.email} 
+                               onChange = {this.handleChange}
+                               className="form-control"/>
+                  </div>
+                  <div className="form-group ">
+                    <label  htmlFor="mobile" >
+                        Mobile
+                    </label> 
+                    <input type="text"
+                               type="text"
+                                id="mobile"
+                                name="mobile"
+                                 value={this.state.mobile} 
+                                 onChange = {this.handleChange}
+                                 className="form-control"/>
+                    </div>
+                 <input type="submit"  className="btn btn-primary m-3"
+                        value="submit"/>
+                  <Link to="/customers" >
+                        <button type="button" class="btn btn-primary">
+                            Back
+                        </button>
+                   </Link>
                 </form>
+               
             </div>
         )
     }
 }
-const mapStateToProps=(state,props)=>{
-    //console.log('form',props)
-    const id=props.match.params.id
-    return{
-        customer:findCustomers(state.customers,id)
-    }
+const mapStateToProps = (state,props) =>{ 
+    const id = props.match.params.id
+        return{
+            customer : findCustomer(state.customers,id)
+        }
 }
 export default withRouter(connect(mapStateToProps)(CustomerForm))
